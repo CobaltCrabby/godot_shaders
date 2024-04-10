@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dixq2yynnkgnx"]
+
+[ext_resource type="ArrayMesh" uid="uid://csfq4e75mivu" path="res://models/boba/boba.res" id="1_t8dfx"]
+
+[node name="bobadog" type="MeshInstance3D"]
+mesh = ExtResource("1_t8dfx")

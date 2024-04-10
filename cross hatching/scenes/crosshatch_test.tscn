@@ -1,0 +1,203 @@
+[gd_scene load_steps=27 format=3 uid="uid://cp64svv47c8vf"]
+
+[ext_resource type="ArrayMesh" uid="uid://csfq4e75mivu" path="res://models/boba/boba.res" id="1_efpu3"]
+[ext_resource type="Shader" path="res://cross hatching/shaders/color_blur.gdshader" id="2_3krwv"]
+[ext_resource type="Script" path="res://scripts/spin.gd" id="2_hwnxx"]
+[ext_resource type="Shader" path="res://cross hatching/shaders/blur_y.gdshader" id="3_ltioj"]
+[ext_resource type="Shader" path="res://cross hatching/shaders/blur_x.gdshader" id="4_e3nub"]
+[ext_resource type="Shader" path="res://cross hatching/shaders/hatching.gdshader" id="5_u6uoh"]
+[ext_resource type="Texture2D" uid="uid://bhc4a5nd0abvo" path="res://cross hatching/textures/cross_hatch.png" id="6_6ssge"]
+[ext_resource type="Shader" path="res://cross hatching/shaders/double_blur_y.gdshader" id="7_qh77j"]
+[ext_resource type="Shader" path="res://cross hatching/shaders/double_blur_x.gdshader" id="8_5gy4k"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_r3bil"]
+viewport_path = NodePath("Rendering/Hatch Blur 2 VP")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_j2kij"]
+viewport_path = NodePath("Rendering/DoG Hatching VP")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_da3g4"]
+resource_local_to_scene = true
+shader = ExtResource("2_3krwv")
+shader_parameter/brightness = 0.995
+shader_parameter/hatched_texture = SubResource("ViewportTexture_j2kij")
+shader_parameter/blurred_texture = SubResource("ViewportTexture_r3bil")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_rrfny"]
+viewport_path = NodePath("Rendering/Hatch Blur 1 VP")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uu5as"]
+resource_local_to_scene = true
+shader = ExtResource("3_ltioj")
+shader_parameter/kernel_size = 5
+shader_parameter/gaussian_sigma = 5.0
+shader_parameter/k = 1.6
+shader_parameter/screen_texture = SubResource("ViewportTexture_rrfny")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_wl5mh"]
+viewport_path = NodePath("Rendering/DoG Hatching VP")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xd6bj"]
+resource_local_to_scene = true
+shader = ExtResource("4_e3nub")
+shader_parameter/kernel_size = 5
+shader_parameter/gaussian_sigma = 5.0
+shader_parameter/k = 1.6
+shader_parameter/screen_texture = SubResource("ViewportTexture_wl5mh")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ec7ox"]
+viewport_path = NodePath("Rendering/Camera VP")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_irrsc"]
+viewport_path = NodePath("Rendering/DoG Blur 2 VP")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qabkx"]
+resource_local_to_scene = true
+shader = ExtResource("5_u6uoh")
+shader_parameter/shader_off = null
+shader_parameter/tau = 6.5
+shader_parameter/threshold = 0.1
+shader_parameter/thresholding = true
+shader_parameter/phi = 1.0
+shader_parameter/tanh_smoothing = false
+shader_parameter/hatching = true
+shader_parameter/hatching_resolution = 9.0
+shader_parameter/hatching_texture = ExtResource("6_6ssge")
+shader_parameter/colored_hatch = true
+shader_parameter/saturation = 4.0
+shader_parameter/blend_strength = 0.9
+shader_parameter/hatching_threshold_1 = 0.15
+shader_parameter/hatching_threshold_2 = 0.17
+shader_parameter/hatching_threshold_3 = 0.185
+shader_parameter/hatching_threshold_4 = 0.555
+shader_parameter/hatching_rotation_1 = null
+shader_parameter/hatching_rotation_2 = null
+shader_parameter/hatching_rotation_3 = null
+shader_parameter/hatching_rotation_4 = null
+shader_parameter/hatching_toggle_1 = true
+shader_parameter/hatching_toggle_2 = true
+shader_parameter/hatching_toggle_3 = true
+shader_parameter/hatching_toggle_4 = true
+shader_parameter/original_texture = SubResource("ViewportTexture_ec7ox")
+shader_parameter/screen_texture = SubResource("ViewportTexture_irrsc")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_40ru6"]
+viewport_path = NodePath("Rendering/DoG Blur 1 VP")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_psa4p"]
+resource_local_to_scene = true
+shader = ExtResource("7_qh77j")
+shader_parameter/kernel_size = 5
+shader_parameter/gaussian_sigma = 2.0
+shader_parameter/k = 1.6
+shader_parameter/screen_texture = SubResource("ViewportTexture_40ru6")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_aqyqd"]
+viewport_path = NodePath("Rendering/Camera VP")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_akvss"]
+resource_local_to_scene = true
+shader = ExtResource("8_5gy4k")
+shader_parameter/kernel_size = 5
+shader_parameter/gaussian_sigma = 2.0
+shader_parameter/k = 1.6
+shader_parameter/screen_texture = SubResource("ViewportTexture_aqyqd")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nu55h"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_7dq8p"]
+sky_material = SubResource("ProceduralSkyMaterial_nu55h")
+
+[sub_resource type="Environment" id="Environment_mcp83"]
+background_mode = 2
+sky = SubResource("Sky_7dq8p")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="CrosshatchTest" type="Node3D"]
+
+[node name="bobadog" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -1, -4)
+mesh = ExtResource("1_efpu3")
+script = ExtResource("2_hwnxx")
+speed = 1.0
+
+[node name="Rendering" type="Node" parent="."]
+
+[node name="Final Blend" type="ColorRect" parent="Rendering"]
+material = SubResource("ShaderMaterial_da3g4")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hatch Blur 2 VP" type="SubViewport" parent="Rendering"]
+size = Vector2i(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="Rendering/Hatch Blur 2 VP"]
+material = SubResource("ShaderMaterial_uu5as")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hatch Blur 1 VP" type="SubViewport" parent="Rendering"]
+size = Vector2i(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="Rendering/Hatch Blur 1 VP"]
+material = SubResource("ShaderMaterial_xd6bj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DoG Hatching VP" type="SubViewport" parent="Rendering"]
+size = Vector2i(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="Rendering/DoG Hatching VP"]
+material = SubResource("ShaderMaterial_qabkx")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DoG Blur 2 VP" type="SubViewport" parent="Rendering"]
+size = Vector2i(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="Rendering/DoG Blur 2 VP"]
+material = SubResource("ShaderMaterial_psa4p")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DoG Blur 1 VP" type="SubViewport" parent="Rendering"]
+size = Vector2i(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="Rendering/DoG Blur 1 VP"]
+material = SubResource("ShaderMaterial_akvss")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Camera VP" type="SubViewport" parent="Rendering"]
+size = Vector2i(1920, 1080)
+
+[node name="Camera3D" type="Camera3D" parent="Rendering/Camera VP"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.434003, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Rendering"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Rendering"]
+environment = SubResource("Environment_mcp83")

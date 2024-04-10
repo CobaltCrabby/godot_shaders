@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgk2gowghvwjl"]
+
+[ext_resource type="Texture2D" uid="uid://bbsbbd5pfh3gr" path="res://models/gugu/gugu.png" id="1_bqvr2"]
+
+[node name="gugu" type="Sprite3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.549494, 0.00394595, 0.616826)
+texture = ExtResource("1_bqvr2")

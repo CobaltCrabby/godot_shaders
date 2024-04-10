@@ -1,0 +1,142 @@
+[gd_scene load_steps=17 format=3 uid="uid://de2ifpyppq2tv"]
+
+[ext_resource type="PackedScene" uid="uid://dixq2yynnkgnx" path="res://models/boba/bobaobject.tscn" id="1_jxsmk"]
+[ext_resource type="Shader" path="res://pixel renderer/shaders/pixelrender.gdshader" id="2_2feba"]
+[ext_resource type="Script" path="res://scripts/spin.gd" id="2_wqfu4"]
+[ext_resource type="Texture2D" uid="uid://don6hu6rr82r6" path="res://pixel renderer/textures/custom_palette.png" id="3_3cl60"]
+[ext_resource type="PackedScene" uid="uid://dgk2gowghvwjl" path="res://models/gugu/gugu.tscn" id="5_1j1wn"]
+[ext_resource type="Texture2D" uid="uid://ccdb4eqb4jci6" path="res://pixel renderer/textures/shigu_palette.png" id="6_5ox8d"]
+
+[sub_resource type="Environment" id="Environment_xoqv3"]
+background_mode = 1
+background_color = Color(0.192157, 0.192157, 0.192157, 1)
+
+[sub_resource type="Environment" id="Environment_afnxu"]
+background_color = Color(0.239216, 0.239216, 0.239216, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.772549, 0.772549, 0.772549, 1)
+
+[sub_resource type="World3D" id="World3D_0lh25"]
+environment = SubResource("Environment_afnxu")
+
+[sub_resource type="GDScript" id="GDScript_i0ne7"]
+script/source = "extends SubViewport
+
+@export var bobadog: Node3D
+
+func _ready():
+	own_world_3d = true
+"
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_n8nxt"]
+viewport_path = NodePath("Rendering/boba/initial")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0w080"]
+resource_local_to_scene = true
+shader = ExtResource("2_2feba")
+shader_parameter/spread = 0.1
+shader_parameter/colors = 5
+shader_parameter/custom_pallete = true
+shader_parameter/screen_texture = SubResource("ViewportTexture_n8nxt")
+shader_parameter/palette = ExtResource("3_3cl60")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_sn24i"]
+viewport_path = NodePath("Rendering/gugu/initial")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eufpv"]
+resource_local_to_scene = true
+shader = ExtResource("2_2feba")
+shader_parameter/spread = 0.1
+shader_parameter/colors = 5
+shader_parameter/custom_pallete = true
+shader_parameter/screen_texture = SubResource("ViewportTexture_sn24i")
+shader_parameter/palette = ExtResource("6_5ox8d")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ccny0"]
+viewport_path = NodePath("Rendering/boba/final")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ovf2b"]
+viewport_path = NodePath("Rendering/gugu/final")
+
+[node name="PixelrenderTest" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xoqv3")
+
+[node name="Rendering" type="Node" parent="."]
+
+[node name="boba" type="Node" parent="Rendering"]
+
+[node name="initial" type="SubViewport" parent="Rendering/boba"]
+own_world_3d = true
+world_3d = SubResource("World3D_0lh25")
+transparent_bg = true
+size = Vector2i(256, 148)
+script = SubResource("GDScript_i0ne7")
+
+[node name="Camera3D" type="Camera3D" parent="Rendering/boba/initial"]
+
+[node name="bobadog" parent="Rendering/boba/initial" instance=ExtResource("1_jxsmk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000730515, -1.06443, -4.64191)
+skeleton = NodePath("../../../..")
+script = ExtResource("2_wqfu4")
+speed = 1.0
+rotation_axis = Vector3(0, 1, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Rendering/boba/initial"]
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="final" type="SubViewport" parent="Rendering/boba"]
+transparent_bg = true
+size = Vector2i(256, 148)
+
+[node name="ColorRect" type="ColorRect" parent="Rendering/boba/final"]
+material = SubResource("ShaderMaterial_0w080")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="gugu" type="Node" parent="Rendering"]
+
+[node name="initial" type="SubViewport" parent="Rendering/gugu"]
+own_world_3d = true
+transparent_bg = true
+size = Vector2i(256, 148)
+
+[node name="gugu" parent="Rendering/gugu/initial" instance=ExtResource("5_1j1wn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.01458)
+script = ExtResource("2_wqfu4")
+speed = 0.7
+rotation_axis = Vector3(0, 0, 1)
+
+[node name="Camera3D" type="Camera3D" parent="Rendering/gugu/initial"]
+
+[node name="final" type="SubViewport" parent="Rendering/gugu"]
+transparent_bg = true
+size = Vector2i(256, 148)
+
+[node name="ColorRect" type="ColorRect" parent="Rendering/gugu/final"]
+material = SubResource("ShaderMaterial_eufpv")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="boba sprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.566915, 0.00394595, 0.800548)
+billboard = 1
+texture_filter = 0
+texture = SubResource("ViewportTexture_ccny0")
+
+[node name="gugu sprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4086, 0, 0.913694)
+billboard = 1
+texture_filter = 0
+texture = SubResource("ViewportTexture_ovf2b")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.94414)

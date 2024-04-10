@@ -1,0 +1,99 @@
+[gd_scene load_steps=12 format=3 uid="uid://bkn3vg1ywm0jc"]
+
+[ext_resource type="Shader" path="res://pixel water/shaders/water.gdshader" id="1_vf316"]
+[ext_resource type="Texture2D" uid="uid://cxa3scyvncpys" path="res://pixel water/textures/CausticTexture.png" id="2_dck71"]
+
+[sub_resource type="Environment" id="Environment_ai07m"]
+background_mode = 1
+background_color = Color(0.121569, 0.113725, 0.101961, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.647059, 0.647059, 0.647059, 1)
+sdfgi_enabled = true
+sdfgi_read_sky_light = false
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mr1bp"]
+size = Vector2(10, 10)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_m1hs4"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vsiw0"]
+seamless = true
+noise = SubResource("FastNoiseLite_m1hs4")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qjaov"]
+noise_type = 2
+frequency = 0.0196
+fractal_gain = 0.365
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wxu8p"]
+width = 200
+height = 200
+seamless = true
+noise = SubResource("FastNoiseLite_qjaov")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lkid4"]
+render_priority = 0
+shader = ExtResource("1_vf316")
+shader_parameter/foam_alpha = 0.2
+shader_parameter/foam_speed = 0.01
+shader_parameter/foam_color = Color(0.588235, 0.835294, 0.980392, 1)
+shader_parameter/foam_tex = ExtResource("2_dck71")
+shader_parameter/distortion_intensity = 0.05
+shader_parameter/distortion_speed = 0.03
+shader_parameter/distortion_noise = SubResource("NoiseTexture2D_vsiw0")
+shader_parameter/overlay_speed = 0.03
+shader_parameter/overlay_alpha = 0.27
+shader_parameter/overlay_cutoff = 0.345
+shader_parameter/overlay_color = Color(0.419608, 0.439216, 0.45098, 1)
+shader_parameter/overlay_noise = SubResource("NoiseTexture2D_wxu8p")
+shader_parameter/scale = 1.0
+shader_parameter/pixelization = 100.0
+shader_parameter/base_alpha = 0.8
+shader_parameter/base_color = Color(0.243137, 0.658824, 0.870588, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ptjel"]
+size = Vector2(10, 10)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fqoo6"]
+size = Vector2(3, 10)
+
+[node name="lol" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 0)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ai07m")
+
+[node name="water" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.999997, 1.69805e-05, -0.00230882, -1.53864e-05, 1, 0.000685732, 0.00230883, -0.000685695, 0.999997, 0, 0, 0)
+mesh = SubResource("PlaneMesh_mr1bp")
+surface_material_override/0 = SubResource("ShaderMaterial_lkid4")
+
+[node name="container" type="Node3D" parent="."]
+
+[node name="bottom" type="MeshInstance3D" parent="container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 0)
+mesh = SubResource("PlaneMesh_ptjel")
+skeleton = NodePath("../..")
+
+[node name="side1" type="MeshInstance3D" parent="container"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -5, -0.7, 0)
+mesh = SubResource("PlaneMesh_fqoo6")
+
+[node name="side2" type="MeshInstance3D" parent="container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 5, -0.7, 0)
+mesh = SubResource("PlaneMesh_fqoo6")
+
+[node name="side3" type="MeshInstance3D" parent="container"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, -0.7, -5)
+mesh = SubResource("PlaneMesh_fqoo6")
+
+[node name="side4" type="MeshInstance3D" parent="container"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, 0, -0.7, 5)
+mesh = SubResource("PlaneMesh_fqoo6")
