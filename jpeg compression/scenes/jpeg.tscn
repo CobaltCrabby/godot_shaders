@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://d0gjr5usijb8s"]
+
+[ext_resource type="Shader" path="res://jpeg compression/shaders/jpeg.gdshader" id="1_4be2g"]
+[ext_resource type="PackedScene" uid="uid://dixq2yynnkgnx" path="res://models/boba/bobaobject.tscn" id="2_id3uj"]
+[ext_resource type="Script" path="res://scripts/spin.gd" id="3_qi283"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w6m6n"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_5yklo"]
+sky_material = SubResource("ProceduralSkyMaterial_w6m6n")
+
+[sub_resource type="Environment" id="Environment_kh8lb"]
+background_mode = 2
+sky = SubResource("Sky_5yklo")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_byc6d"]
+shader = ExtResource("1_4be2g")
+shader_parameter/quality = 5.0
+shader_parameter/color_compression = 4
+
+[node name="Jpeg" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_kh8lb")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_byc6d")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="bobadog" parent="." instance=ExtResource("2_id3uj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.16363, -4.72032)
+script = ExtResource("3_qi283")
+speed = 1.0
+rotation_axis = Vector3(0, 1, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
