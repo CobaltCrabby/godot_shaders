@@ -13,9 +13,10 @@ shader_parameter/palette = ExtResource("3_3cl60")
 shader_parameter/spread = 0.3
 shader_parameter/colors = 10
 shader_parameter/custom_pallete = true
-shader_parameter/outline = true
+shader_parameter/outline = false
 shader_parameter/outline_threshold = 0.01
 shader_parameter/outline_color = Color(0.451426, 0.491592, 0.662885, 1)
+shader_parameter/pallete_outline = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_70s4v"]
 material = SubResource("ShaderMaterial_vrs7t")

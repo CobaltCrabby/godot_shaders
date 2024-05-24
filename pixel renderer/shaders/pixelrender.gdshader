@@ -15,6 +15,7 @@ group_uniforms outline;
 uniform bool outline;
 uniform float outline_threshold : hint_range(0, 1) = 0.01;
 uniform vec3 outline_color: source_color;
+uniform bool pallete_outline;
 
 const mat4 bayer4 = mat4(
 	vec4(0, 8, 2, 10),
@@ -67,10 +68,10 @@ void fragment() {
 	average_color /= float(non_transparent);
 	
 	float final_depth = step(outline_threshold, depth_difference);
-	float alpha = clamp(original.a + final_depth, 0.0, 1.0);
+	float alpha = clamp(original.a + (outline ? final_depth : 0.0), 0.0, 1.0);
 	float reverse_grayscale = abs(average_color.r - 1.0);
 	vec3 reverse_color = texture(palette, vec2(pow(reverse_grayscale, 10), 0.5)).rgb;
-	vec3 outline_added = mix(color_quantized.rgb, reverse_color, final_depth);
+	vec3 outline_added = mix(color_quantized.rgb, pallete_outline ? reverse_color : outline_color, final_depth);
 	
 	ALBEDO = outline ? vec3(outline_added) : color_quantized.rgb;
 	ALBEDO = alpha > 0.0 ? ALBEDO : background_color;
