@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
 uniform sampler2D screen : hint_screen_texture;
-uniform float quality : hint_range(1, 100, 1) = 50;
+uniform float quality : hint_range(1, 100) = 50;
 uniform int color_compression : hint_range(1, 4, 1) = 1;
 
 const mat3 rgb_to_ycbcr = mat3(
@@ -19,23 +19,12 @@ const mat3 ycbcr_to_rgb = mat3(
 const int[64] base_compression = {
 	16, 11, 10, 16, 24, 40, 51, 61,
 	12, 12, 14, 19, 26 ,58, 60, 55,
-    14, 13, 16, 24, 40, 57, 69, 56,
+	14, 13, 16, 24, 40, 57, 69, 56,
 	14, 17, 22, 29, 51, 87, 80, 62,
-    18, 22, 37, 56, 68, 109, 103, 77,
+	18, 22, 37, 56, 68, 109, 103, 77,
 	24, 35, 55, 64, 81, 104, 113, 92,
-    49, 64, 78, 87, 103, 121, 120, 101,
+	49, 64, 78, 87, 103, 121, 120, 101,
 	72, 92, 95, 98, 112, 100, 103, 99
-};
-
-const int[64] compression = {
-	112,84,98,98,126,168,343,504,
-	77,84,91,119,154,245,448,644,
-	70,98,112,154,259,385,546,665,
-	112,13,168,203,392,448,609,686,
-	168,182,280,357,476,567,721,784,
-	280,406,399,609,763,728,847,700,
-	357,420,483,560,721,791,840,721,
-	427,385,392,434,539,644,707,693
 };
 
 varying int[64] kernel;
@@ -80,7 +69,7 @@ void fragment() {
 	}
 	
 	color = color / float(color_compression * color_compression) * 255.0 * rgb_to_ycbcr + vec3(0.0, 128.0, 128.0);
-	
+	color = texture(screen, c_new_uv).rgb * 255.0 * rgb_to_ycbcr + vec3(0.0, 128.0, 128.0);
 	// convert into 8x8 matrix of y value from rgb->y,cb,cr conversion
 	for (int i = 0; i < 64; i++) {
 		kernel[i] = int((texture(screen, new_uv + vec2(float(i % 8)/res_x, float(i / 8)/res_y)).rgb * rgb_to_ycbcr).r * 255.0);

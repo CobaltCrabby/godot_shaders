@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://d0gjr5usijb8s"]
 
-[ext_resource type="Shader" path="res://jpeg compression/shaders/jpeg.gdshader" id="1_4be2g"]
-[ext_resource type="PackedScene" uid="uid://dixq2yynnkgnx" path="res://models/boba/bobaobject.tscn" id="2_id3uj"]
-[ext_resource type="Script" path="res://scripts/spin.gd" id="3_qi283"]
+[ext_resource type="Shader" path="res://jpeg compression/shaders/jpeg.gdshader" id="1_eo6wj"]
+[ext_resource type="PackedScene" uid="uid://dixq2yynnkgnx" path="res://models/boba/bobaobject.tscn" id="2_wt8b2"]
+[ext_resource type="Script" path="res://scripts/spin.gd" id="3_fx4hb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w6m6n"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -18,8 +18,8 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_byc6d"]
-shader = ExtResource("1_4be2g")
-shader_parameter/quality = 5.0
+shader = ExtResource("1_eo6wj")
+shader_parameter/quality = 5.79
 shader_parameter/color_compression = 4
 
 [node name="Jpeg" type="Node3D"]
@@ -39,10 +39,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="bobadog" parent="." instance=ExtResource("2_id3uj")]
+[node name="bobadog" parent="." instance=ExtResource("2_wt8b2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.16363, -4.72032)
-script = ExtResource("3_qi283")
+script = ExtResource("3_fx4hb")
 speed = 1.0
-rotation_axis = Vector3(0, 1, 0)
 
 [node name="Camera3D" type="Camera3D" parent="."]

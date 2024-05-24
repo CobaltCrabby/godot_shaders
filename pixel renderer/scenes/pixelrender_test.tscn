@@ -81,7 +81,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000730515, -1.06443, -4.64
 skeleton = NodePath("../../../..")
 script = ExtResource("2_wqfu4")
 speed = 1.0
-rotation_axis = Vector3(0, 1, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Rendering/boba/initial"]
 transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)

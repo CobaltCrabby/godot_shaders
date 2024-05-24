@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6et8ddd4707b"]
+
+[ext_resource type="Script" path="res://compute shaders/scripts/compute.gd" id="1_tqd07"]
+
+[node name="ComputerShader" type="Node3D"]
+
+[node name="compute" type="Node" parent="." node_paths=PackedStringArray("texture_rect")]
+script = ExtResource("1_tqd07")
+texture_rect = NodePath("../TextureRect")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
