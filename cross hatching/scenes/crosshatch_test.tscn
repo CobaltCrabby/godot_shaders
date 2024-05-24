@@ -122,7 +122,6 @@ glow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -1, -4)
 mesh = ExtResource("1_efpu3")
 script = ExtResource("2_hwnxx")
-speed = 1.0
 
 [node name="Rendering" type="Node" parent="."]
 
