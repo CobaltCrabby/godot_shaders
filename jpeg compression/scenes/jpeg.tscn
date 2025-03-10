@@ -1,8 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://d0gjr5usijb8s"]
+[gd_scene load_steps=9 format=3 uid="uid://d0gjr5usijb8s"]
 
-[ext_resource type="Shader" path="res://jpeg compression/shaders/jpeg.gdshader" id="1_eo6wj"]
+[ext_resource type="Script" uid="uid://bfv6sy6yi1cad" path="res://jpeg compression/scripts/jpeg_quality.gd" id="1_d0qtv"]
 [ext_resource type="PackedScene" uid="uid://dixq2yynnkgnx" path="res://models/boba/bobaobject.tscn" id="2_wt8b2"]
-[ext_resource type="Script" path="res://scripts/spin.gd" id="3_fx4hb"]
+[ext_resource type="Script" uid="uid://8cnk7g25p6m5" path="res://scripts/spin.gd" id="3_fx4hb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w6m6n"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -17,30 +17,33 @@ sky = SubResource("Sky_5yklo")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_byc6d"]
-shader = ExtResource("1_eo6wj")
-shader_parameter/quality = 5.79
-shader_parameter/color_compression = 4
+[sub_resource type="CompositorEffect" id="CompositorEffect_d0qtv"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("1_d0qtv")
+quality = 25
+metadata/_custom_type_script = "uid://bfv6sy6yi1cad"
+
+[sub_resource type="Compositor" id="Compositor_84ish"]
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_d0qtv")])
 
 [node name="Jpeg" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_kh8lb")
+compositor = SubResource("Compositor_84ish")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_byc6d")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="bobadog" parent="." instance=ExtResource("2_wt8b2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.16363, -4.72032)
 script = ExtResource("3_fx4hb")
+speed = 0.0
 
 [node name="Camera3D" type="Camera3D" parent="."]

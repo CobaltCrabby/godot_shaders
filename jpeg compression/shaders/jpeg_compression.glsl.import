@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://c26webrgogyym"
+path="res://.godot/imported/jpeg_compression.glsl-8d5477c02d1017e76b225bfe42b558bd.res"
+
+[deps]
+
+source_file="res://jpeg compression/shaders/jpeg_compression.glsl"
+dest_files=["res://.godot/imported/jpeg_compression.glsl-8d5477c02d1017e76b225bfe42b558bd.res"]
+
+[params]
+
