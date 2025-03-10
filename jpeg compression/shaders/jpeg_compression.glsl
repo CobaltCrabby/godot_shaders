@@ -61,11 +61,6 @@ void main() {
         return;
     }
 
-    // idk how to do color compression i forgot
-    float c_uv_x = trunc(uv.x * params.raster_size.x/float(params.color_compression)) / (params.raster_size.x/float(params.color_compression));
-	float c_uv_y = trunc(uv.y * params.raster_size.y/float(params.color_compression)) / (params.raster_size.y/float(params.color_compression));
-	ivec2 c_new_uv = ivec2(vec2(c_uv_x, c_uv_y) * params.raster_size);
-
     // create kernel with ycc conversion
     int kernel[8][8];
     for (int i = 0; i < 8; i++) {
